@@ -22,7 +22,7 @@ void calcularProbabilidades(string cadena, vector<double>& probabilidades, char 
     if(elemento >= 'A' && elemento <= 'Z'){
       posicion = elemento - 'A';
       alfabeto[posicion] = elemento;
-      probabilidades[posicion]++;
+      probabilidades[posicion]+=1;
       sumatoria++;
     }
     else{
@@ -32,13 +32,13 @@ void calcularProbabilidades(string cadena, vector<double>& probabilidades, char 
         if(cadena[i] != '\n'){
           if(alfabeto[posicion] == '\0'){
             continua = false;
-            probabilidades[posicion]++;
+            probabilidades[posicion]+=1;
             sumatoria++;
             alfabeto[posicion] = cadena[i];
           }
           else if(alfabeto[posicion] == cadena[i]){
             continua = false;
-            probabilidades[posicion]++;
+            probabilidades[posicion]+=1;
             sumatoria++;
           }
         }
@@ -133,9 +133,9 @@ void ordenacionPorInsercionNodo(vector<double>& probabilidades, char *alfabeto, 
 int main(int argc, char ** argv){
   string cadena;
   string linea;
-  vector<double> probabilidades(30,0);
-  char alfabeto[30];
-  vector<int> nodos(30);
+  vector<double> probabilidades(32,0);
+  char alfabeto[32];
+  vector<int> nodos(32);
   for (int i = 0; i< nodos.size();i++){
     nodos[i]=i;
   }
@@ -147,7 +147,7 @@ int main(int argc, char ** argv){
   calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
   ordenacionPorInsercionNodo(probabilidades, alfabeto,nodos);
 
-  
+
   //creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
 
   cout << "asdfasdfad" << endl;
