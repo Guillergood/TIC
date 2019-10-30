@@ -82,6 +82,34 @@ void ordenacionPorInsercion(float *probabilidades, char *alfabeto, int tamanio){
         probabilidades[j+1] = probabilidadesObjetivo;
         alfabeto[j+1] = alfabetoObjetivo;
     }
+
+}
+
+void ordenacionPorInsercionNodo(float *probabilidades, char *alfabeto, int* nodos, int tamanio){
+    int i, j, nodoObjetivo;
+    float probabilidadesObjetivo;
+    char alfabetoObjetivo;
+    for (i = 1; i < tamanio; i++)
+    {
+        probabilidadesObjetivo = probabilidades[i];
+        alfabetoObjetivo = alfabeto[i];
+        nodoObjetivo = nodos[i];
+        j = i-1;
+        while (j >= 0 && probabilidades[j] < probabilidadesObjetivo){
+            probabilidades[j+1] = probabilidades[j];
+            alfabeto[j+1] = alfabeto[j];
+            nodos[j+1] = nodos[j];
+            j = j-1;
+
+        }
+
+        probabilidades[j+1] = probabilidadesObjetivo;
+        alfabeto[j+1] = alfabetoObjetivo;
+        nodos[j+1] = nodoObjetivo;
+    }
+        for (int i = 0; i<tamanio; i++){
+      cout << probabilidades[i] << endl;
+    }
 }
 
 /*void creaArbolHuffman(int ** matriz, float *probabilidades, char *alfabeto, int k){
@@ -109,18 +137,23 @@ int main(int argc, char ** argv){
   string linea;
   float probabilidades[30];
   char alfabeto[30];
+  int nodos[30];
 
-  for(int i = 0; i < 30; i++)
+  for(int i = 0; i < 30; i++){
     probabilidades[i] = 0;
+    nodos[i] = i;
+  }
+  
 
   std::ifstream t("quijote.txt");
 	std::stringstream buffer;
 	buffer << t.rdbuf();
 
   calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
-  ordenacionPorInsercion(probabilidades, alfabeto, 30);
-  //creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
+  ordenacionPorInsercionNodo(probabilidades, alfabeto,nodos, 30);
 
+  }
+  //creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
 
 
   float suma = 0;
@@ -149,4 +182,3 @@ int main(int argc, char ** argv){
 
 
 
-}
