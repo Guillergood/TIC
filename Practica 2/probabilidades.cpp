@@ -6,9 +6,9 @@
 using namespace std;
 
 
-void calcularProbabilidades(string cadena, float *probabilidades, char *alfabeto){
-  float sumatoria = 0;
-  float sumatoria2 = 0;
+void calcularProbabilidades(string cadena, double *probabilidades, char *alfabeto){
+  double sumatoria = 0;
+  double sumatoria2 = 0;
   int posicion = 0;
   int simbolos = 0;
 
@@ -65,9 +65,9 @@ void calcularProbabilidades(string cadena, float *probabilidades, char *alfabeto
 }
 
 
-void ordenacionPorInsercion(float *probabilidades, char *alfabeto, int tamanio){
+void ordenacionPorInsercion(double *probabilidades, char *alfabeto, int tamanio){
     int i, j;
-    float probabilidadesObjetivo;
+    double probabilidadesObjetivo;
     char alfabetoObjetivo;
     for (i = 1; i < tamanio; i++)
     {
@@ -85,9 +85,9 @@ void ordenacionPorInsercion(float *probabilidades, char *alfabeto, int tamanio){
 
 }
 
-void ordenacionPorInsercionNodo(float *probabilidades, char *alfabeto, int* nodos, int tamanio){
+void ordenacionPorInsercionNodo(double *probabilidades, char *alfabeto, int* nodos, int tamanio){
     int i, j, nodoObjetivo;
-    float probabilidadesObjetivo;
+    double probabilidadesObjetivo;
     char alfabetoObjetivo;
     for (i = 1; i < tamanio; i++)
     {
@@ -112,7 +112,7 @@ void ordenacionPorInsercionNodo(float *probabilidades, char *alfabeto, int* nodo
     }
 }
 
-/*void creaArbolHuffman(int ** matriz, float *probabilidades, char *alfabeto, int k){
+/*void creaArbolHuffman(int ** matriz, double *probabilidades, char *alfabeto, int k){
 
   int n = pow(2,k+1)-1;
   int matrix[n][4];
@@ -135,7 +135,7 @@ void ordenacionPorInsercionNodo(float *probabilidades, char *alfabeto, int* nodo
 int main(int argc, char ** argv){
   string cadena;
   string linea;
-  float probabilidades[30];
+  double probabilidades[30];
   char alfabeto[30];
   int nodos[30];
 
@@ -156,7 +156,7 @@ int main(int argc, char ** argv){
   //creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
 
 
-  float suma = 0;
+  double suma = 0;
   for (int i = 0; i < 32; i++) {
     if(alfabeto[i] != '\0'){
       std::cout << probabilidades[i];
