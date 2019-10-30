@@ -152,13 +152,12 @@ int main(int argc, char ** argv){
   calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
   ordenacionPorInsercionNodo(probabilidades, alfabeto,nodos, 30);
 
-  }
+  
   //creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
 
 
   float suma = 0;
-  std::cout << "{";
-  for (size_t i = 0; i < 32; i++) {
+  for (int i = 0; i < 32; i++) {
     if(alfabeto[i] != '\0'){
       std::cout << probabilidades[i];
       if(i != 29){
@@ -167,10 +166,7 @@ int main(int argc, char ** argv){
     }
 
   }
-  std::cout << "}" << endl;
-
-  std::cout << "{";
-  for (size_t i = 0; i < 32; i++) {
+  for (int i = 0; i < 32; i++) {
     if(alfabeto[i] != '\0'){
       std::cout << alfabeto[i];
       if(i != 29){
@@ -178,7 +174,6 @@ int main(int argc, char ** argv){
       }
     }
   }
-  std::cout << "}" << endl;
-
-
-
+}
+  
+ 
