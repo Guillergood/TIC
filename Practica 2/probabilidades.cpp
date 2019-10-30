@@ -2,11 +2,11 @@
 #include <iostream>
 #include <sstream>
 #include <math.h>
-
+#include<vector>
 using namespace std;
 
 
-void calcularProbabilidades(string cadena, double *probabilidades, char *alfabeto){
+void calcularProbabilidades(string cadena, vector<double>& probabilidades, char *alfabeto){
   double sumatoria = 0;
   double sumatoria2 = 0;
   int posicion = 0;
@@ -65,11 +65,11 @@ void calcularProbabilidades(string cadena, double *probabilidades, char *alfabet
 }
 
 
-void ordenacionPorInsercion(double *probabilidades, char *alfabeto, int tamanio){
+void ordenacionPorInsercion(vector<double>& probabilidades, char *alfabeto){
     int i, j;
     double probabilidadesObjetivo;
     char alfabetoObjetivo;
-    for (i = 1; i < tamanio; i++)
+    for (i = 1; i < probabilidades.size(); i++)
     {
         probabilidadesObjetivo = probabilidades[i];
         alfabetoObjetivo = alfabeto[i];
@@ -85,11 +85,11 @@ void ordenacionPorInsercion(double *probabilidades, char *alfabeto, int tamanio)
 
 }
 
-void ordenacionPorInsercionNodo(double *probabilidades, char *alfabeto, int* nodos, int tamanio){
+void ordenacionPorInsercionNodo(vector<double>& probabilidades, char *alfabeto, vector<int>& nodos){
     int i, j, nodoObjetivo;
     double probabilidadesObjetivo;
     char alfabetoObjetivo;
-    for (i = 1; i < tamanio; i++)
+    for (i = 1; i < probabilidades.size(); i++)
     {
         probabilidadesObjetivo = probabilidades[i];
         alfabetoObjetivo = alfabeto[i];
@@ -107,27 +107,25 @@ void ordenacionPorInsercionNodo(double *probabilidades, char *alfabeto, int* nod
         alfabeto[j+1] = alfabetoObjetivo;
         nodos[j+1] = nodoObjetivo;
     }
-        for (int i = 0; i<tamanio; i++){
+        for (int i = 0; i<probabilidades.size(); i++){
       cout << probabilidades[i] << endl;
     }
 }
 
-/*void creaArbolHuffman(int ** matriz, double *probabilidades, char *alfabeto, int k){
+// void creaArbolHuffman(int ** matriz, vector<double>probabilidades, char *alfabeto, int k){
 
-  int n = pow(2,k+1)-1;
-  int matrix[n][4];
+//   int n = pow(2,k+1)-1;
+//   int matrix[n][4];
 
-  //Inicializacion
+//   //Inicializacion
+//   for (size_t i = 0; i < n; i++) {
+//     matrix[i][0] = '\0';
+//     matrix[i][1] = -1;
+//     matrix[i][2] = -1;
+//     matrix[i][3] = -1;
+//   }
 
-  for (size_t i = 0; i < n; i++) {
-    matrix[i][0] = '\0';
-    matrix[i][1] = -1;
-    matrix[i][2] = -1;
-    matrix[i][3] = -1;
-  }
-
-
-}*/
+// }
 
 
 
@@ -135,45 +133,42 @@ void ordenacionPorInsercionNodo(double *probabilidades, char *alfabeto, int* nod
 int main(int argc, char ** argv){
   string cadena;
   string linea;
-  double probabilidades[30];
+  vector<double> probabilidades(30,0);
   char alfabeto[30];
-  int nodos[30];
-
-  for(int i = 0; i < 30; i++){
-    probabilidades[i] = 0;
-    nodos[i] = i;
+  vector<int> nodos(30);
+  for (int i = 0; i< nodos.size();i++){
+    nodos[i]=i;
   }
-  
-
   std::ifstream t("quijote.txt");
 	std::stringstream buffer;
 	buffer << t.rdbuf();
+  t.close();
 
   calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
-  ordenacionPorInsercionNodo(probabilidades, alfabeto,nodos, 30);
+  ordenacionPorInsercionNodo(probabilidades, alfabeto,nodos);
 
   
   //creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
 
+  cout << "asdfasdfad" << endl;
+//   double suma = 0;
+//   for (int i = 0; i < 32; i++) {
+//     if(alfabeto[i] != '\0'){
+//       std::cout << probabilidades[i];
+//       if(i != 29){
+//         std::cout << ",";
+//       }
+//     }
 
-  double suma = 0;
-  for (int i = 0; i < 32; i++) {
-    if(alfabeto[i] != '\0'){
-      std::cout << probabilidades[i];
-      if(i != 29){
-        std::cout << ",";
-      }
-    }
+//   }
+//   for (int i = 0; i < 32; i++) {
+//     if(alfabeto[i] != '\0'){
+//       std::cout << alfabeto[i];
+//       if(i != 29){
+//         std::cout << ",";
+//       }
+//     }
+//   }
+// }
 
-  }
-  for (int i = 0; i < 32; i++) {
-    if(alfabeto[i] != '\0'){
-      std::cout << alfabeto[i];
-      if(i != 29){
-        std::cout << ",";
-      }
-    }
-  }
 }
-  
- 
