@@ -5,10 +5,6 @@
 
 using namespace std;
 
-class Nodo{
-  private int index;
-  private
-}
 
 void calcularProbabilidades(string cadena, float *probabilidades, char *alfabeto){
   float sumatoria = 0;
@@ -51,8 +47,8 @@ void calcularProbabilidades(string cadena, float *probabilidades, char *alfabeto
   }
 
   for (size_t i = 0; i < 32; i++) {
-    sumatoria2 += probabilidades[i];
     probabilidades[i]/= sumatoria;
+    sumatoria2 += probabilidades[i];
     if(alfabeto[i] != '\0'){
       simbolos++;
       std::cout << " SIMBOLO: "<< simbolos << " -> " << alfabeto[i] << endl;
@@ -88,7 +84,7 @@ void ordenacionPorInsercion(float *probabilidades, char *alfabeto, int tamanio){
     }
 }
 
-void creaArbolHuffman(int ** matriz, float *probabilidades, char *alfabeto, int k){
+/*void creaArbolHuffman(int ** matriz, float *probabilidades, char *alfabeto, int k){
 
   int n = pow(2,k+1)-1;
   int matrix[n][4];
@@ -103,7 +99,7 @@ void creaArbolHuffman(int ** matriz, float *probabilidades, char *alfabeto, int 
   }
 
 
-}
+}*/
 
 
 
@@ -123,11 +119,11 @@ int main(int argc, char ** argv){
 
   calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
   ordenacionPorInsercion(probabilidades, alfabeto, 30);
-  creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
+  //creaArbolHuffmann(matriz,probabilidades,alfabeto, 30);
 
 
 
-  /*float suma = 0;
+  float suma = 0;
   std::cout << "{";
   for (size_t i = 0; i < 32; i++) {
     if(alfabeto[i] != '\0'){
@@ -149,7 +145,7 @@ int main(int argc, char ** argv){
       }
     }
   }
-  std::cout << "}" << endl;*/
+  std::cout << "}" << endl;
 
 
 
