@@ -97,7 +97,7 @@ void ordenacionPorInsercion(double *probabilidades, int *orden, int tamanio){
 }
 
 
-void creaArbolHuffmann(char *alfabeto, double * probabilidades, int matriz[64][4], int tree_size){
+void creaArbolHuffmann(char *alfabeto, double * probabilidades, int matriz[64][4], int &tree_size){
 
     const int TAMALFABETO = tree_size;
 
@@ -159,126 +159,72 @@ void creaArbolHuffmann(char *alfabeto, double * probabilidades, int matriz[64][4
 
 }
 
-
-
-
 // Codificar un mensaje con el árbol de Huffman
-void codificarHuffman(char * cadena, int hf[64][4], bool * &codificado, int &tree_size){
+void codificarCaracterHuffman(char simbolo, int hf[64][4], char * &salida, int &tree_size){
 
     unsigned short c;
-    int tam;
-    char simbolo;
-    int pos;
-    int padre;
-    codificado = new bool[20];
-    int contador;
+    int pos=-1;
+    char *aux = new char[20];
+    int contador=0;
 
-    //Obtenemos el tamaño de la cadena
-    int n = strlen(cadena);
-    cadena[n] = '*';
+    // Buscar símbolo en hf
+    for (int j=0; j<tree_size and pos==-1; j++){
+        if (hf[j][0] == simbolo){
+            pos = j;
+        }
+    }
+    while (hf[pos][3] != -1){
 
-    for (int i=0;i<=n; i++){
-        simbolo = cadena[i];
+        if (pos == hf[hf[pos][3]][1]){ // hijo izquierda // es un cero
+            aux[contador] = '0';
+            contador++;
 
-        // Buscar símbolo en hf
-        pos = -1;
-        for (int j=0; j<tree_size and pos==-1; j++){
-            if (hf[j][0] == simbolo){
-                pos = j;
-            }
+        } else { // hijo derecha // es un uno
+            aux[contador] = '1';
+            contador++;
         }
 
-        contador = 0;
-
-        while (hf[pos][3] != -1){
-            int padre = hf[pos][3];
-
-            if (pos == hf[padre][1]){ // hijo izquierda // es un cero
-                codificado[contador] = false;
-                contador++;
-
-            } else { // hijo derecha // es un uno
-                codificado[contador] = true;
-                contador++;
-            }
-
-            pos = padre;
-        }
-
-        // Enviar () --> sendLaserBit
-        for (int j=contador-1; j>=0; j--){
-            cout << (int)codificado[j];
-        }
-
-        cout << " ";
+        pos = hf[pos][3];
     }
 
-    for(int i=0; i<contador; i++,contador--){
-        bool aux = codificado[i];
-        codificado[i] = codificado[contador];
-        codificado[contador] = aux;
+    int len_salida = contador;
+    salida = new char[len_salida];
+    // Damos la vuelta a la codificación
+    for(int i=0; i<len_salida; i++,contador--){
+      salida[i] = aux[contador-1];
     }
+    salida[len_salida]='\0';
+    //Enviar () --> sendLaserBit
 }
 
 // -------------------------------------------------------------------------------- //
 
 // Decodificar una secuencia de bits con el ábrol de Huffman
-void decodificarHuffman(char *codificado, int hf[64][4], int tree_size){
+void decodificarHuffman(char *codificado, char *& salida, int hf[64][4], int tree_size){
 
-    int pos_dec = -1;
-    int contador_dec = 0;
-    char mensaje[100];
-    bool recibido ;
-    char letra = '\0';
-    char bufferSalida[101];
-    int utilbufferSalida;
-    int poscodificado = 0;
+    int pos_dec=tree_size -1;//raiz
+    bool h_dch ;
+    int cnt_salida = 0;
+    salida=new char[strlen(codificado)];
 
     // Decodificado mensaje
-    utilbufferSalida=0;
+    for (int i =0; i<strlen(codificado);i++){
+      h_dch = codificado[i]=='1';
 
-    while (letra != '*'){
-
-        pos_dec = tree_size-1; // raíz
-        letra = '\0';
-
-        // Decodificado bit a bit
-        while (letra=='\0') {
-
-            // Simulación de recvLaserBit
-            recibido = ((char)(codificado[poscodificado]))=='1';
-            poscodificado++;
-
-            // es hijo izquierda
-            if (!recibido){
-                pos_dec = hf[pos_dec][1];
-            } else { // es hijo derecha
-                pos_dec = hf[pos_dec][2];
-            }
-
-            if (hf[pos_dec][1] == -1 and hf[pos_dec][2] == -1){
-                // nodo hoja y decodificamos
-                letra = hf[pos_dec][0];
-                bufferSalida[utilbufferSalida] = letra;
-                utilbufferSalida++;
-
-                pos_dec = tree_size-1; // raíz
-            }
-        }
-    }
-
-    // Enviar usb
-    bufferSalida[utilbufferSalida-1] = '\0';
-
-    for (int i= 0; i<utilbufferSalida;i++)
-        cout << bufferSalida[i];
-
-    cout << endl;
+      if (h_dch)
+        pos_dec = hf[pos_dec][2];
+       else 
+        pos_dec = hf[pos_dec][1];
+      
+      if (hf[pos_dec][0]!='\0'){
+        salida[cnt_salida] = hf[pos_dec][0];
+        pos_dec = tree_size-1;
+        cnt_salida++;
+      }
+    }   
+    salida[cnt_salida]='\0';
+     
 }
-
-
-
-
 
 int main(int argc, char ** argv){
   string cadena;
@@ -297,10 +243,20 @@ int main(int argc, char ** argv){
 
 
   int matriz[64][4];
-
-  calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
+  alfabeto[0]='A';
+  alfabeto[1]='B';
+  alfabeto[2]='C';
+  alfabeto[3]='D';
+  probabilidades[0] =0.3 ;
+  probabilidades[1] = 0.2;
+  probabilidades[2] = 0.3;
+  probabilidades[3] = 0.2;
+  tamanio = 4;
+  
+  //calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
   ordenacionPorInsercion(probabilidades, alfabeto, tamanio);
   creaArbolHuffmann(alfabeto,probabilidades,matriz, tamanio);
+
 
   cout << "MATRIZ ÁRBOL DE CODIFICACIÓN:" << endl;
   for (int i = 0; i < tamanio; i++){
@@ -315,6 +271,15 @@ int main(int argc, char ** argv){
       cout << endl;
   }
 
-
+  char* ba, *cod ;
+  codificarCaracterHuffman('B', matriz,ba ,tamanio );
+  for (int j=0; j<strlen(ba); j++){
+       cout << "codificado ["<< j << "] =" << ba[j] << endl;
+      }
+  ba = "0111\0";
+  decodificarHuffman(ba,cod,matriz,tamanio);
+  for (int i = 0 ; i<strlen(cod); i++){
+    cout << cod[i] << " " ;
+  }
   return 0;
 }
