@@ -208,12 +208,11 @@ int main(int argc, char ** argv){
 
   for(int i = 0; i < 30; i++){
     probabilidades[i] = 0;
+  }
 
-    }
-
-  std::ifstream t("quijote.txt");
+  std::ifstream archivo("quijote.txt");
 	std::stringstream buffer;
-	buffer << t.rdbuf();
+	buffer << archivo.rdbuf();
 
 
   int matriz[64][4];
