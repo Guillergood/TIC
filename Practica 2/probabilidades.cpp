@@ -76,9 +76,9 @@ void ordenacionPorInsercion(double *probabilidades, int *orden, int tamanio){
     }
 }
 
-void creaArbolHuffmann(char *alfabeto, double * probabilidades,  int matriz[64][4], int &tree_size){
+void creaArbolHuffmann(char *alfabeto, double * probabilidades,  int matriz[64][4], int &tamanioArbol){
 
-    const int TAMALFABETO = tree_size;
+    const int TAMALFABETO = tamanioArbol;
     int tam_orden = TAMALFABETO;
 
     int orden[TAMALFABETO]; //vector que guarda las posiciones de los códigos
@@ -103,27 +103,26 @@ void creaArbolHuffmann(char *alfabeto, double * probabilidades,  int matriz[64][
         probabilidades[tam_orden-2] = probabilidades[tam_orden - 2] + probabilidades[tam_orden-1];
 
         //Asignamos al nuevo nodo generado sus dos hijos:
-        matriz[tree_size][1] = orden[tam_orden-2];
-        matriz[tree_size][2] = orden[tam_orden-1];
+        matriz[tamanioArbol][1] = orden[tam_orden-2];
+        matriz[tamanioArbol][2] = orden[tam_orden-1];
 
         //Ahora asignamos a los dos nodos hijos su nuevo padre:
-        matriz[ orden[tam_orden-2] ][3] = tree_size;
-        matriz[ orden[tam_orden-1] ][3] = tree_size;
+        matriz[ orden[tam_orden-2] ][3] = tamanioArbol;
+        matriz[ orden[tam_orden-1] ][3] = tamanioArbol;
 
         // Modificamos el vector orden
-        orden[tam_orden-2]= tree_size;
+        orden[tam_orden-2]= tamanioArbol;
 
         //reducimos el tamaño del vector orden:
         tam_orden--;
 
         //En caso de que hayamos terminado, indicamos en el nodo que este es la raiz:
         if(tam_orden == 1){
-            matriz[tree_size][3] = -1;
-            //int raiz = hf[tree_size][3];
+            matriz[tamanioArbol][3] = -1;
         }
 
         //Aumentamos el tamaño del arbol:
-        tree_size++;
+        tamanioArbol++;
 
         //Reordenamos el vector de probabilidades y el de orden:
         ordenacionPorInsercion(probabilidades, orden, tam_orden);
@@ -132,7 +131,7 @@ void creaArbolHuffmann(char *alfabeto, double * probabilidades,  int matriz[64][
 }
 
 // Codificar un mensaje con el árbol de Huffman
-void codificarCaracterHuffman(char *entrada, int hf[64][4], char * &salida, int &tree_size){
+void codificarCaracterHuffman(char *entrada, int hf[64][4], char * &salida, int &tamanioArbol){
 
     int pos=-1, len_salida;
     char *simbolo_cod = new char[20];
@@ -141,7 +140,7 @@ void codificarCaracterHuffman(char *entrada, int hf[64][4], char * &salida, int 
     for (int i =0; i<strlen(entrada);i++){
       simbolo = entrada[i];
       // Buscar símbolo en hf
-      for (int j=0; j<tree_size and pos==-1; j++){
+      for (int j=0; j<tamanioArbol and pos==-1; j++){
           if (hf[j][0] == simbolo){
               pos = j;
           }
@@ -173,9 +172,9 @@ void codificarCaracterHuffman(char *entrada, int hf[64][4], char * &salida, int 
 // -------------------------------------------------------------------------------- //
 
 // Decodificar una secuencia de bits con el ábrol de Huffman
-void decodificarHuffman(char *codificado, char *& salida, int hf[64][4], int tree_size){
+void decodificarHuffman(char *codificado, char *& salida, int hf[64][4], int tamanioArbol){
 
-    int pos_dec=tree_size -1;//raiz
+    int pos_dec=tamanioArbol -1;//raiz
     bool h_dch ;
     int cnt_salida = 0;
     salida=new char[strlen(codificado)];
@@ -186,17 +185,17 @@ void decodificarHuffman(char *codificado, char *& salida, int hf[64][4], int tre
 
       if (h_dch)
         pos_dec = hf[pos_dec][2];
-       else 
+       else
         pos_dec = hf[pos_dec][1];
-      
+
       if (hf[pos_dec][0]!='\0'){
         salida[cnt_salida] = hf[pos_dec][0];
-        pos_dec = tree_size-1;
+        pos_dec = tamanioArbol-1;
         cnt_salida++;
       }
-    }   
+    }
     salida[cnt_salida]='\0';
-     
+
 }
 
 int main(int argc, char ** argv){
@@ -209,7 +208,7 @@ int main(int argc, char ** argv){
 
   for(int i = 0; i < 30; i++){
     probabilidades[i] = 0;
-    
+
     }
 
   std::ifstream t("quijote.txt");
@@ -218,7 +217,7 @@ int main(int argc, char ** argv){
 
 
   int matriz[64][4];
-  
+
   calcularProbabilidades(buffer.str(), probabilidades, alfabeto);
   creaArbolHuffmann(alfabeto,probabilidades,matriz, tamanio);
 
@@ -240,7 +239,7 @@ int main(int argc, char ** argv){
   codificarCaracterHuffman(" ", matriz,ba ,tamanio );
   for (int j=0; j<strlen(ba); j++){
        cout << "codificado ["<< j << "] =" << ba[j] << endl;
-      }
+  }
   decodificarHuffman(ba,cod,matriz,tamanio);
   for (int i = 0 ; i<strlen(cod); i++){
     cout << cod[i] << " " ;
