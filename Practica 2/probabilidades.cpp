@@ -5,7 +5,7 @@
 #include <cstring>
 
 using namespace std;
-const int TAM_BUFFER = 400;
+const int MAX_LEN = 400;
 
 void calcularProbabilidades(string cadena, double *probabilidades, char *alfabeto){
   double sumatoria = 0;
@@ -132,14 +132,13 @@ void creaArbolHuffmann(char *alfabeto, double * probabilidades,  int matriz[64][
 }
 
 // Codificar un mensaje con el árbol de Huffman
-void codificarHuffman(char *entrada, int hf[64][4], char * &salida, int &tamanioArbol){
+void codificarHuffman(char entrada[], int hf[64][4], char salida[], int &tamanioArbol){
 
     int pos=-1, len_salida, contador=0, inicio=0;
-    char *simbolo_cod = new char[TAM_BUFFER];
+    char simbolo_cod [MAX_LEN];
     char simbolo;
 
-    salida = new char[TAM_BUFFER];
-    for (int i =0; i<TAM_BUFFER;i++){
+    for (int i =0; i<MAX_LEN;i++){
       salida[i]='\0';
       simbolo_cod[i]='\0';
     }
@@ -179,13 +178,11 @@ void codificarHuffman(char *entrada, int hf[64][4], char * &salida, int &tamanio
 
 
 // Decodificar una secuencia de bits con el ábrol de Huffman
-void decodificarHuffman(char *codificado, char *& salida, int hf[64][4], int tamanioArbol){
+void decodificarHuffman(char codificado[], char salida[], int hf[64][4], int tamanioArbol){
 
     int pos_dec=tamanioArbol -1;//raiz
     bool h_dch ;
     int cnt_salida = 0;
-    salida=new char[strlen(codificado)];
-
     // Decodificado mensaje
     for (int i =0; i<strlen(codificado);i++){
       h_dch = codificado[i]=='1';
@@ -241,7 +238,7 @@ int main(int argc, char ** argv){
       cout << endl;
   }
 
-  char* ba, *cod ;
+  char ba[MAX_LEN], cod[MAX_LEN] ;
   codificarHuffman("ABA", matriz,ba ,tamanio );
   for (int j=0; j<strlen(ba); j++){
        cout << "codificado ["<< j << "] =" << ba[j] << endl;
