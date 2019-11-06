@@ -8,9 +8,9 @@ void pulseDown(){
   delay(TAU);
 }
 
-void sendBit(int bit){
+void sendBit(char bit){
   digitalWrite(8,HIGH);
-  if(bit == 1){
+  if(bit == '1'){
       delay(TAU*2);
   }else{
       delay(TAU);
