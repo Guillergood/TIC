@@ -5,6 +5,7 @@
 #include <cstring>
 
 using namespace std;
+const int TAM_BUFFER = 400;
 
 void calcularProbabilidades(string cadena, double *probabilidades, char *alfabeto){
   double sumatoria = 0;
@@ -131,12 +132,18 @@ void creaArbolHuffmann(char *alfabeto, double * probabilidades,  int matriz[64][
 }
 
 // Codificar un mensaje con el árbol de Huffman
-void codificarCaracterHuffman(char *entrada, int hf[64][4], char * &salida, int &tamanioArbol){
+void codificarHuffman(char *entrada, int hf[64][4], char * &salida, int &tamanioArbol){
 
-    int pos=-1, len_salida;
-    char *simbolo_cod = new char[20];
-    int contador=0;
+    int pos=-1, len_salida, contador=0, inicio=0;
+    char *simbolo_cod = new char[TAM_BUFFER];
     char simbolo;
+
+    salida = new char[TAM_BUFFER];
+    for (int i =0; i<TAM_BUFFER;i++){
+      salida[i]='\0';
+      simbolo_cod[i]='\0';
+    }
+
     for (int i =0; i<strlen(entrada);i++){
       simbolo = entrada[i];
       // Buscar símbolo en hf
@@ -160,16 +167,16 @@ void codificarCaracterHuffman(char *entrada, int hf[64][4], char * &salida, int 
       }
 
       len_salida = contador;
-      salida = new char[len_salida];
       // Damos la vuelta a la codificación
-      for(int j=0; j<len_salida; j++,contador--){
+      for(int j=inicio; j<inicio+len_salida; j++,contador--){
         salida[j] = simbolo_cod[contador-1];
       }
+      inicio+=len_salida;
+      pos=-1;
     }
-    salida[len_salida]='\0';
+    salida[inicio+len_salida]='\0';
 }
 
-// -------------------------------------------------------------------------------- //
 
 // Decodificar una secuencia de bits con el ábrol de Huffman
 void decodificarHuffman(char *codificado, char *& salida, int hf[64][4], int tamanioArbol){
@@ -235,13 +242,13 @@ int main(int argc, char ** argv){
   }
 
   char* ba, *cod ;
-  codificarCaracterHuffman(" ", matriz,ba ,tamanio );
+  codificarHuffman("ABA", matriz,ba ,tamanio );
   for (int j=0; j<strlen(ba); j++){
        cout << "codificado ["<< j << "] =" << ba[j] << endl;
   }
   decodificarHuffman(ba,cod,matriz,tamanio);
   for (int i = 0 ; i<strlen(cod); i++){
-    cout << cod[i] << " " ;
+    cout << cod[i] << "" ;
   }
   return 0;
 }
