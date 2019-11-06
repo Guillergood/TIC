@@ -227,15 +227,13 @@ int main(int argc, char ** argv){
 
   cout << "MATRIZ ÁRBOL DE CODIFICACIÓN:" << endl;
   for (int i = 0; i < tamanio; i++){
-     cout << i << " ";
       for (int j = 0; j < 4; j++){
           if (j==0){
-              cout << (char)(matriz[i][j]) << " ";
+              cout << (char)(matriz[i][j]) << ",";
           } else {
-              cout << (matriz[i][j]) << " ";
+              cout << (matriz[i][j]) << ",";
           }
       }
-      cout << endl;
   }
 
   char ba[MAX_LEN], cod[MAX_LEN] ;
