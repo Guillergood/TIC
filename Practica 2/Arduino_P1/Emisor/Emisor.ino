@@ -1,8 +1,8 @@
 
 #define TAU 50
+#define MAX_LEN 100
 String leido;
-const int TAMANIO = 31;
-const int MAX_LEN =400 ;
+
 int mat[64][4]= {
 {'A',-1,-1,52},
 {'B',-1,-1,39},
@@ -141,7 +141,8 @@ void loop() {
       codificarHuffman(leido_c,mat, salida,tam);
       for (int i =0; i< strlen(salida); i++){
         sendBit(salida[i]);
-       }    
+      }
+        
      }
 }
     

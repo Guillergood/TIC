@@ -1,5 +1,5 @@
 
-#define TAM 400
+#define TAM 100
 #define FRACCION 2
 #define TAU 50
 
