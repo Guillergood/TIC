@@ -237,7 +237,7 @@ int main(int argc, char ** argv){
   }
 
   char ba[MAX_LEN], cod[MAX_LEN] ;
-  codificarHuffman("ABA", matriz,ba ,tamanio );
+  codificarHuffman("HOLAGUILLE", matriz,ba ,tamanio );
   for (int j=0; j<strlen(ba); j++){
        cout << "codificado ["<< j << "] =" << ba[j] << endl;
   }
