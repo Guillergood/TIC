@@ -225,22 +225,28 @@ int main(int argc, char ** argv){
   creaArbolHuffmann(alfabeto,probabilidades,matriz, tamanio);
 
 
-  cout << "MATRIZ ÁRBOL DE CODIFICACIÓN:" << endl;
+  cout << "MATRIZ ÁRBOL DE CODIFICACIÓN:" << endl << "{";
   for (int i = 0; i < tamanio; i++){
       for (int j = 0; j < 4; j++){
+        if (j==3 )
+            cout << (matriz[i][j]) << "";
+        else 
           if (j==0){
-              cout << (char)(matriz[i][j]) << ",";
+              cout << '{'<< '\''<<(char)(matriz[i][j]) << '\''<<",";
           } else {
               cout << (matriz[i][j]) << ",";
           }
       }
+      cout << "}," <<endl;
   }
+  cout << '}' << endl;
 
   char ba[MAX_LEN], cod[MAX_LEN] ;
-  codificarHuffman("HOLAGUILLE", matriz,ba ,tamanio );
+  codificarHuffman("HOLA ANTONIO.", matriz,ba ,tamanio );
   for (int j=0; j<strlen(ba); j++){
-       cout << "codificado ["<< j << "] =" << ba[j] << endl;
+       cout << ba[j] << " ";
   }
+  cout << endl;
   decodificarHuffman(ba,cod,matriz,tamanio);
   for (int i = 0 ; i<strlen(cod); i++){
     cout << cod[i] << "" ;
