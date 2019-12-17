@@ -25,7 +25,7 @@ int decode(const uint8_t codigo, bool pulsados[4]){
     // bit5 XOR BIT4 XOR BIT1 XOR BIT0
     // bit3 XOR BIT2 XOR BIT1 XOR BIT0
 
-    return 4*error1+ 2*error2 + error1;
+    return error1 + error2 + error1;
   
   }
 
