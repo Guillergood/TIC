@@ -66,7 +66,9 @@ void loop() {
     
   if (decodificar(v , botones)){
     if (botones[0] || botones[1] || botones[2] || botones[3]){
-          Serial.println("No se ha detectado ningun error.");
+          Serial.print("No se ha detectado ningun error. El sindrome es; ");
+          unsigned int err = sindrome(v,palabra,7,matriz,3);
+          Serial.println(err);
 
       Serial.print("El codigo recibido es: ");
 
@@ -93,7 +95,8 @@ void loop() {
         Serial.println();
       }
       
-  }else{
+  }else if (v!=0){
+    
     Serial.println("Se ha detectado un error.");
     // Arreglamos el error
     unsigned int err = sindrome(v,palabra,7,matriz,3);
