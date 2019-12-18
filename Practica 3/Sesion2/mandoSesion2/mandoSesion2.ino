@@ -31,28 +31,29 @@ unsigned int sindrome(const uint8_t codigo, int *palabra, int palabraSize, int M
 
 bool decodificar(const uint8_t codigo, bool pulsados[4]) {
 
-    bool bitpar1 = ((codigo & (1<<0)) > 0);  // 0
-    bool bitpar2 = ((codigo & (1<<1)) > 0);  // 1
-    bool bitpar3 = ((codigo & (1<<3)) > 0);  // 3
+  pulsados[0]= ((codigo&(1<<2))>0);
+  pulsados[1]= ((codigo&(1<<4))>0);
+  pulsados[2]= ((codigo&(1<<5))>0);
+  pulsados[3]= ((codigo&(1<<6))>0);
 
-    pulsados[0] = ((codigo & (1<<2)) > 0);   // 2
-    pulsados[1] = ((codigo & (1<<4)) > 0);   // 4
-    pulsados[2] = ((codigo & (1<<5)) > 0);   // 5
-    pulsados[3] = ((codigo & (1<<6)) > 0);   // 6
+  unsigned int tabla[7] = {0,0,0,0,0,0,0};
 
-    int error1 = (bitpar1 ^ pulsados[0] ^ pulsados[1] ^ pulsados[3]);
-    int error2 = (bitpar2 ^ pulsados[0] ^ pulsados[2] ^ pulsados[3]);
-    int error3 = (bitpar3 ^ pulsados[1] ^ pulsados[2] ^ pulsados[3]);
+  for(int i = 0; i < 7;i++){
+    if((codigo&(1<<i)) > 0){
+      tabla[i] = 1;
+    }
+  }
 
-    // bit6 XOR BIT4 XOR BIT2 XOR BIT0
-    // bit5 XOR BIT4 XOR BIT1 XOR BIT0
-    // bit3 XOR BIT2 XOR BIT1 XOR BIT0
+  if((tabla[0]^tabla[2]^tabla[4]^tabla[6]) > 0) return false;
+  if((tabla[1]^tabla[2]^tabla[5]^tabla[6]) > 0) return false;
+  if((tabla[3]^tabla[4]^tabla[5]^tabla[6]) > 0) return false;
 
-    return error1 + error2 + error1;
+  return true;
 }
 
 void loop() {
   bool botones[4]; 
+  uint8_t v = leerRF2272();  
   int palabra[7];
   int matriz[7][3] = {
     {1,1,1},
@@ -62,8 +63,7 @@ void loop() {
     {0,1,1},
     {0,1,0},
     {0,0,1}};
-  
-  uint8_t v = leerRF2272();  
+    
   if (decodificar(v , botones)){
     if (botones[0] || botones[1] || botones[2] || botones[3]){
           Serial.println("No se ha detectado ningun error.");
